@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Maker Vow Joy Reader</title>
+    <!-- Load Web3.js from a CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+  </head>
+  <body>
+    <h1>Maker Vow Joy Reader</h1>
+    <p>This number must reach zero before flop auctions are possible.</p>
+    <button onclick="readJoy()">Read Joy Value</button>
+    <div id="output"></div>
+    
+    <script>
+      // Maker Vow contract address on Ethereum mainnet
+      const vowAddress = "0xa71937147b55deb8a530c7229c442fd3f31b7db2";
+      
+      // Minimal ABI to read the 'joy' variable from the Vow contract
+      const vowAbi = [
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "joy",
+          "outputs": [{ "name": "", "type": "uint256" }],
+          "stateMutability": "view",
+          "type": "function"
+        }
+      ];
+      
+      async function readJoy() {
+        // Check for an Ethereum provider (e.g., MetaMask)
+        if (typeof window.ethereum !== 'undefined') {
+          try {
+            // Request account access if necessary
+            await ethereum.request({ method: 'eth_requestAccounts' });
+            
+            // Initialize Web3 using the provider
+            const web3 = new Web3(window.ethereum);
+            
+            // Create a contract instance for the Maker Vow contract
+            const vowContract = new web3.eth.Contract(vowAbi, vowAddress);
+            
+            // Call the joy() function to get the current joy value
+            const joyValue = await vowContract.methods.joy().call();
+            
+            // Display the joy value (in its raw integer format)
+            document.getElementById('output').innerHTML = `<p>Current joy value: ${joyValue}</p>`;
+          } catch (error) {
+            console.error(error);
+            document.getElementById('output').innerText = 'Error fetching joy value. See console for details.';
+          }
+        } else {
+          alert("Ethereum provider not found. Please install MetaMask.");
+        }
+      }
+    </script>
+  </body>
+</html>
