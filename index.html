@@ -2,26 +2,26 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Maker Vow Joy Reader</title>
+    <title>Maker Vow Surplus Buffer (Joy) Reader</title>
     <!-- Load Web3.js from a CDN -->
     <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
   </head>
   <body>
-    <h1>Maker Vow Joy Reader</h1>
-    <p>This number must reach zero before flop auctions are possible.</p>
-    <button onclick="readJoy()">Read Joy Value</button>
+    <h1>Maker Vow Surplus Buffer (Joy) Reader</h1>
+    <p>This value (hump) is the surplus buffer, which must reach zero for flop auctions to be possible.</p>
+    <button onclick="readJoy()">Read Joy (hump) Value</button>
     <div id="output"></div>
     
     <script>
       // Maker Vow contract address on Ethereum mainnet
       const vowAddress = "0xa71937147b55deb8a530c7229c442fd3f31b7db2";
       
-      // Minimal ABI to read the 'joy' variable from the Vow contract
+      // Minimal ABI to read the 'hump' variable from the Vow contract
       const vowAbi = [
         {
           "constant": true,
           "inputs": [],
-          "name": "joy",
+          "name": "hump",
           "outputs": [{ "name": "", "type": "uint256" }],
           "stateMutability": "view",
           "type": "function"
@@ -41,14 +41,14 @@
             // Create a contract instance for the Maker Vow contract
             const vowContract = new web3.eth.Contract(vowAbi, vowAddress);
             
-            // Call the joy() function to get the current joy value
-            const joyValue = await vowContract.methods.joy().call();
+            // Call the hump() function to get the current surplus buffer value (joy)
+            const humpValue = await vowContract.methods.hump().call();
             
-            // Display the joy value (in its raw integer format)
-            document.getElementById('output').innerHTML = `<p>Current joy value: ${joyValue}</p>`;
+            // Display the hump (joy) value
+            document.getElementById('output').innerHTML = `<p>Current surplus buffer (joy/hump) value: ${humpValue}</p>`;
           } catch (error) {
             console.error(error);
-            document.getElementById('output').innerText = 'Error fetching joy value. See console for details.';
+            document.getElementById('output').innerText = 'Error fetching value. See console for details.';
           }
         } else {
           alert("Ethereum provider not found. Please install MetaMask.");
